@@ -1,0 +1,89 @@
+/* Фон всей страницы */
+.pageContainer {
+    min-height: 100vh;               /* Высота на весь экран */
+    background: rgb(63,94,251);
+    background: -moz-radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(135,234,255,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(135,234,255,1) 100%);
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(135,234,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f5efb",endColorstr="#87eaff",GradientType=1);
+    background-size: cover;          /* Картинка масштабируется под размер экрана */
+    display: flex;
+    align-items: center;             /* Центрирование по вертикали */
+    justify-content: center;         /* Центрирование по горизонтали */
+}
+
+/* Центральный блок с контентом */
+.contentBody {
+    width: 80%;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px; /* Добавлен отступ сверху */
+    margin-bottom: 30px; /* Добавлен отступ сверху */
+}
+
+.formWrapper {
+    width: 100%;
+    padding: 20px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: white;
+    border-radius: 4px;
+    font-size: 20px;
+    box-sizing: border-box; /* Учитываем padding в ширине */
+}
+
+
+.title {
+    text-align: center; /* Центрирование текста */
+    font-size: 24px; /* Увеличенный размер шрифта */
+    font-weight: bold; /* Жирный текст */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+
+.label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.input {
+    width: 100%;
+    padding: 8px;
+    margin-bottom: 20px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 20px;
+    box-sizing: border-box; /* Учитываем padding и border в ширине */
+}
+
+
+.button {
+    width: 100%;
+    padding: 10px;
+    background-color: rgb(0, 123, 255);
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 20px;
+    font-weight: bold;
+    transition: background-color 0.1s ease, transform 0.3s ease; 
+}
+
+.button:hover {
+    background-color: rgb(0, 113, 233);
+    transform: scale(1.02);
+}
+
+.signUpLink {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 20px;
+}
+
+.error {
+    color: red;
+    margin-bottom: 15px;
+}

@@ -1,0 +1,243 @@
+body {
+    margin: 0;
+    padding: 0;
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(135,234,255,1) 100%);
+    background-attachment: fixed;
+    background-size: cover;
+}
+
+/* Контейнер для выравнивания */
+.pageContainer {
+    min-height: 100vh;              
+    display: flex;
+    align-items: center;             
+    justify-content: center;         
+}
+
+/* Центральный блок с контентом */
+.contentBody {
+    width: 80%;
+    max-width: 70vw;
+    min-height: 90vh;              
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px;
+    margin-bottom: 30px;
+}
+
+.headerLineDivider {
+    border: 1px solid #ccc;
+    margin: 10px 0px;
+    /* style={{ border: "1px solid #ccc", margin: "10px 0" }}  */
+}
+
+/* Сетка для плиток кокпитов */
+.cockpitsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);  /* Две колонки */
+    gap: 20px;
+}
+
+/* Стили плитки кокпита */
+.cockpitTile {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Ошибка */
+.error {
+    color: red;
+    margin-top: 10px;
+}
+
+.cockpitButtons {
+    margin-top: 10px;
+    display: flex;
+    gap: 10px; /* Необязательно: отступ между кнопками */
+  }
+
+.wikiButton {
+    background-color: rgb(0, 128, 0);
+    width: 100%;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 28px;
+    transition: background-color 0.1s ease; 
+}
+
+.wikiButton:hover {
+    background-color: rgb(0, 105, 0);
+}
+
+.checklistButton {
+    background-color: rgb(0, 89, 255);
+    width: 100%;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 28px;
+    transition: background-color 0.1s ease; 
+}
+
+.checklistButton:hover {
+    background-color: rgb(0, 58, 166);
+}
+
+.editButton {
+    background-color: rgb(255, 165, 0);
+    width: 100%;
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 28px;
+    transition: background-color 0.1s ease; 
+}
+
+.editButton:hover {
+    background-color: rgb(205, 133, 0);
+}
+
+/* Контейнер для разделения на две половины */
+.splitContainer {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+/* Левая и правая панели */
+.leftPane {
+    flex: 1;
+}
+
+.rightPane {
+    flex: 3;
+}
+
+.rightPane {
+    width: 100%;
+}
+
+.filterPanel {
+    flex: 1;
+    background: rgb(248, 248, 248);
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.filterGroup {
+    margin-bottom: 10px;
+}
+
+.filterGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-size: 20px;
+}
+
+.filterGroup input {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: white;
+
+    font-size: 18px;
+}
+
+.filterGroup select {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: rgb(248, 248, 248);
+
+    font-size: 18px;
+}
+
+.applyFilterButton {
+    padding: 8px 12px;
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 20px;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.checklistButtonContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+}
+
+.checklistProgress {
+    font-size: 14px; /* Размер меньше основного */
+    color: white;
+    background-color: rgba(0, 0, 0, 0.6);
+    padding: 3px 8px;
+    border-radius: 4px;
+    margin-top: 3px; /* Разделяет кнопку и текст */
+}
+
+.cockpitTile {
+    background-color: #fff;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    position: relative;
+    overflow: hidden; /* Чтобы фон не выходил за границы */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-repeat: no-repeat; /* Добавлено, чтобы изображение не повторялось */
+    background-position: top right;
+
+}
+
+/* Добавляем фон */
+.cockpitTile::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%; /* Покрываем всю плитку */
+    height: 100%;
+    background-size: cover;
+    background-repeat: no-repeat;
+    z-index: 0; /* Позади контента */
+}
+
+/* Градиентное затухание */
+.cockpitTile::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to right, white, rgba(255, 255, 255, 0.7), transparent);
+    z-index: 1; /* Покрывает изображение, создавая эффект затухания */
+}
+
+/* Контент внутри плитки должен быть поверх фонового изображения */
+.cockpitTileContent {
+    position: relative;
+    z-index: 2;
+}
