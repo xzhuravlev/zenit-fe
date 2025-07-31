@@ -127,13 +127,6 @@ const Cockpits: React.FC = () => {
         return previewUrl;
     };
 
-
-    // return (
-    //     <div>
-    //         {currentUser?.username}
-    //     </div>
-    // );
-
     return (
         <div className={styles.pageContainer}>
             <div className={styles.contentBody}>
