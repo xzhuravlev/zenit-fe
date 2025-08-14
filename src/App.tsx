@@ -7,6 +7,7 @@ import SignUp from './pages/SignUp';
 import Cockpits from './pages/Cockpits';
 import CreateCockpit from './pages/CreateCockpit';
 import WikiCockpit from './pages/WikiCockpit';
+import EditCockpit from './pages/EditCockpit';
 
 const App: React.FC = () => {
     return (
@@ -18,6 +19,8 @@ const App: React.FC = () => {
 					<Route path="/cockpits" element={<Cockpits />} />
 					<Route path="/create-cockpit" element={<CreateCockpit />} />
 					<Route path="/cockpits/:id/wiki" element={<WikiCockpit />} />
+					<Route path="/cockpits/:id/edit" element={<EditCockpit />} />
+
                 </Routes>
             </Layout>
         </BrowserRouter>

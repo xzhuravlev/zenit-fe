@@ -1,0 +1,240 @@
+/* Фон всей страницы */
+.pageContainer {
+    min-height: 100vh;               /* Высота на весь экран */
+    background: rgb(63,94,251);
+    background: -moz-radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(135,234,255,1) 100%);
+    background: -webkit-radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(135,234,255,1) 100%);
+    background: radial-gradient(circle, rgba(63,94,251,1) 0%, rgba(135,234,255,1) 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient(startColorstr="#3f5efb",endColorstr="#87eaff",GradientType=1);
+    background-size: cover;          /* Картинка масштабируется под размер экрана */
+    display: flex;
+    align-items: center;             /* Центрирование по вертикали */
+    justify-content: center;         /* Центрирование по горизонтали */
+}
+
+/* Центральный блок с контентом */
+.contentBody {
+    width: 80%;
+    max-width: 100vw;
+    min-height: 90vh;              /* Заставляем блок занимать всю высоту страницы */
+    background-color: rgba(255, 255, 255, 0.9);
+    padding: 20px;
+    border-radius: 8px;
+    margin-top: 30px; /* Добавлен отступ сверху */
+    margin-bottom: 30px; /* Добавлен отступ сверху */
+}
+
+/* Контейнер для разделения на две половины */
+.splitContainer {
+    display: flex;
+    width: 100%;
+    gap: 20px;
+}
+
+/* Левая и правая панели */
+.leftPane, .rightPane {
+    flex: 1;
+    min-height: 100vh;
+}
+
+.leftPane {
+    background-color: #555;
+    width: 100%;
+    height: 100vh; /* можно регулировать */
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    border-radius: 10px;
+}
+
+.rightPane {
+    width: 100%;
+}
+
+.splitHorizontallyContainer {
+    display: flex;
+    flex-direction: column; /* расположение элементов по вертикали */
+    gap: 20px; /* отступ между блоками */
+}
+
+.smallHorizontalContainer {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    background-color: #fff;
+    border-radius: 10px;
+}
+
+.cockpitDescription {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+
+    font-size: 18px;
+}
+
+.formGroup {
+    margin-bottom: 20px;
+}
+
+.formGroup label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.formGroup input {
+    width: 100%;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+
+    font-size: 18px;
+}
+
+.addInstrumentButton {
+    padding: 8px 12px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    width: 100%;
+    font-size: 20px;
+}
+
+/* Оформление области загрузки */
+.uploadPrompt {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    border-radius: 8px;
+    color: #ffffff;
+    text-align: center;
+    padding: 20px;
+}
+
+.uploadPrompt input {
+    font-size: 20px;
+    padding-bottom: 20px;
+}
+
+.uploadPrompt button {
+    font-size: 20px;
+    border-radius: 8px;
+    color: #000;
+    background-color: #fff;
+}
+
+.uploadPrompt .errorText {
+    font-size: 20px;
+    color: red;
+}
+
+/* ================== */
+
+.panoramaViewer {
+    width: 100%;
+    height: 100vh; /* можно регулировать */
+    border-radius: 10px;
+    cursor: default;
+}
+
+#panorama,
+.panoramaViewer {
+  cursor: default !important;
+}
+
+
+.instrumentItem {
+    padding: 8px 20px;
+    border-radius: 10px;
+    margin: 0px 20px 30px 20px;
+    border: 2px solid #ccc;
+    background-color: rgba(160, 210, 235, 0.4);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.instrumentItem textarea {
+    width: 100%;
+    height: 150px;
+    padding: 12px 20px;
+    box-sizing: border-box;
+    border: 2px solid #ccc;
+    border-radius: 4px;
+    background-color: #f8f8f8;
+    resize: none;
+
+    font-size: 18px;
+}
+
+.checklistItem {
+    padding: 8px 20px;
+    border-radius: 10px;
+    margin: 0px 20px 30px 20px;
+    border: 2px solid #ccc;
+    background-color: rgba(235, 214, 160, 0.4);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.checklistItemItem {
+    padding: 8px 20px;
+    border-radius: 10px;
+    margin: 0px 0px 20px 0px;
+    border: 2px solid #ccc;
+    background-color: rgba(255, 78, 78, 0.4);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+:global(.my-hotspot) {
+    /* background-color: rgba(255, 0, 0, 0.5); Цвет точки */
+    width: 20px;           /* Ширина точки */
+    height: 20px;          /* Высота точки */
+    border-radius: 50%;    /* Делаем точку круглой */
+    border: 3px solid rgba(255, 0, 0, 0.8); /* Обводка вокруг точки */
+    box-shadow: 0px 0px 10px 10px rgba(255, 0, 0, 0.4); /* Дополнительное оформление */
+}
+
+.updateCockpit {
+    padding: 8px 12px;
+    background-color: orange;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    width: 100%;
+    font-size: 40px;
+}
+
+.createError {
+    font-size: 20px;
+    color: red;
+}
+
+.editCockpit {
+    padding: 8px 12px;
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+
+    width: 100%;
+    font-size: 40px;
+}
+
+.editError {
+    font-size: 20px;
+    color: red;
+}
