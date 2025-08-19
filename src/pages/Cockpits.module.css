@@ -494,3 +494,47 @@ body {
   
   .playIcon { font-size: 22px; line-height: 1; }
     
+/* Кнопка лайка — визуально как старый span */
+.favoriteButton {
+  border: none;
+  background: rgba(211, 137, 0, 0.504);
+  color: #fff;
+  padding: 8px 10px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(255,255,255,1);
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  font: inherit;      /* наследуем размер и жирность как у span в h2 */
+  line-height: 1;     /* плотная посадка как у span */
+  appearance: none;   /* убираем нативный вид кнопки */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Без эффектов наведения/нажатия — ровно как у span */
+.favoriteButton:hover,
+.favoriteButton:active,
+.favoriteButton:disabled {
+  filter: none;
+  transform: none;
+  opacity: 1;
+}
+
+/* аккуратный фокус (можно убрать, если не нужно) */
+.favoriteButton:focus-visible {
+  outline: 2px solid rgba(255,255,255,.8);
+  outline-offset: 2px;
+}
+
+.starIcon {
+  font-size: 1em;   /* чтобы звезда была одного размера с числом */
+  line-height: 1;
+}
+
+/* liked-состояние не меняет внешний вид, чтобы оставалось как раньше */
+.favoriteActive { 
+  background: rgb(255, 166, 0);
+  box-shadow: 0 0 30px rgb(255, 166, 0);
+}

@@ -72,6 +72,45 @@ const Cockpits: React.FC = () => {
     });
     const navigate = useNavigate();
 
+    // лайк/анлайк локально: состояние и индикатор загрузки
+    const [likedByMe, setLikedByMe] = useState<Record<number, boolean>>({});
+    const [favLoading, setFavLoading] = useState<Record<number, boolean>>({});
+
+    type ToggleFavoriteResponse = {
+        cockpitId: number;
+        liked: boolean;
+        favoritesCount: number;
+    };
+
+    const toggleFavorite = async (cockpitId: number) => {
+        if (!currentUser) {
+            // если хочешь — редирект на логин
+            // navigate('/login');
+            return;
+        }
+        setFavLoading(prev => ({ ...prev, [cockpitId]: true }));
+
+        try {
+            const { data } = await api.patch<ToggleFavoriteResponse>(`/cockpits/${cockpitId}/favorite`);
+
+            // обновляем счётчик в нужной плитке
+            setCockpits(prev =>
+                prev.map(c =>
+                    c.id === cockpitId
+                        ? { ...c, _count: { ...c._count, favoritedBy: data.favoritesCount } }
+                        : c
+                )
+            );
+            // и локальное состояние лайка
+            setLikedByMe(prev => ({ ...prev, [cockpitId]: data.liked }));
+        } catch (e: any) {
+            console.error("toggle favorite failed:", e?.response?.data || e.message);
+        } finally {
+            setFavLoading(prev => ({ ...prev, [cockpitId]: false }));
+        }
+    };
+
+
     const [openChecklistMenu, setOpenChecklistMenu] = useState<Record<number, boolean>>({});
 
     const toggleChecklistMenu = (cockpitId: number) => {
@@ -119,6 +158,8 @@ const Cockpits: React.FC = () => {
         try {
             const response = await api.get(`/cockpits${queryParams}`);
             setCockpits(response.data);
+            const list = response.data as (Cockpit & { favoritedBy?: Array<{ id: number }> })[];
+            setLikedByMe(Object.fromEntries(list.map(c => [c.id, (c as any).favoritedBy?.length > 0])));
         } catch (err: any) {
             setError(err?.response?.data?.message || err.message || "Ошибка при получении кокпитов");
         }
@@ -261,15 +302,18 @@ const Cockpits: React.FC = () => {
                                                         ✓
                                                     </span>
                                                 )}
-                                                <span style={{
-                                                    color: 'white',
-                                                    background: 'orange',
-                                                    padding: '2px 10px',
-                                                    borderRadius: '8px',
-                                                    boxShadow: "0 0 20px rgba(255, 255, 255, 1)",
-                                                }}>
-                                                    ★ {cockpit?._count?.favoritedBy}
-                                                </span>
+                                                <button
+                                                    className={`${styles.favoriteButton} ${likedByMe[cockpit.id] ? styles.favoriteActive : ""}`}
+                                                    onClick={() => toggleFavorite(cockpit.id)}
+                                                    disabled={!!favLoading[cockpit.id]}
+                                                    aria-pressed={!!likedByMe[cockpit.id]}
+                                                    title={likedByMe[cockpit.id] ? "Remove from favorites" : "Add to favorites"}
+                                                >
+                                                    <span className={styles.starIcon}>★</span>
+                                                    {cockpit?._count?.favoritedBy ?? 0}
+                                                </button>
+
+
                                             </span>
                                         </h2>
                                         <p><strong>Manufacturer:</strong> {cockpit.manufacturer || "N/A"}</p>
@@ -284,7 +328,7 @@ const Cockpits: React.FC = () => {
                                                 View Wiki
                                             </button> */}
 
-                                            <button  className={`${styles.actionButton} ${styles.wikiButton}`} style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }} onClick={() => navigate(`/cockpits/${cockpit.id}/wiki`)}>
+                                            <button className={`${styles.actionButton} ${styles.wikiButton}`} style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }} onClick={() => navigate(`/cockpits/${cockpit.id}/wiki`)}>
                                                 View Wiki
                                             </button>
 
