@@ -241,3 +241,256 @@ body {
     position: relative;
     z-index: 2;
 }
+
+/* Базовая кнопка действий (общая форма/типографика) */
+.actionButton {
+    border: none;
+    cursor: pointer;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    padding: 12px 16px;
+    transition: transform .04s ease, filter .12s ease;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    user-select: none;
+  }
+  .actionButton:active { transform: translateY(1px); }
+  
+  .wikiButton { background-color: rgb(0,128,0); width: 100%; }
+.wikiButton:hover { filter: brightness(.92); }
+
+.editButton { background-color: rgb(255,165,0); width: 100%; }
+.editButton:hover { filter: brightness(.92); }
+
+/* Новая синяя кнопка Checklists */
+.checklistsButton { background-color: rgb(0, 120, 255); width: 100%; }
+.checklistsButton:hover { filter: brightness(.92); }
+
+.checklistsUiWrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: 100%;
+  }
+  
+  /* Контейнер у одинарной кнопки с дропом */
+  .dropdownWrap {
+    position: relative;
+    width: 100%;
+  }
+  
+  .dropdownMenu {
+    position: absolute;
+    bottom: calc(100% + 6px); /* вместо top */
+    left: 0;
+    min-width: 260px;
+    max-width: 100%;
+    background: #fff;
+    border: 1px solid rgba(0,0,0,.1);
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,.15);
+    padding: 6px;
+    z-index: 20;
+  }
+  
+  
+  /* Когда меню «прикреплено» к сплит-кнопке — выравниваем по левой части */
+  .dropdownMenuAttached {
+    bottom: calc(100% + 6px); /* тоже вверх */
+    left: 0;
+  }
+  
+  
+  /* Пункты меню */
+  .dropdownItem {
+    width: 100%;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background: transparent;
+    border: none;
+    text-align: left;
+    cursor: pointer;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px 12px;
+    align-items: center;
+    color: #1f2937; /* slate-800 */
+  }
+  .dropdownItem:hover {
+    background: #f3f4f6; /* slate-100 */
+  }
+  .dropdownItemActive {
+    background: #e0f2fe; /* sky-100 */
+  }
+  .dropdownItemTitle {
+    font-weight: 600;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .dropdownItemMeta {
+    font-size: 12px;
+    color: #6b7280; /* slate-500 */
+    grid-column: 1 / -1;
+  }
+  
+  .splitChecklist {
+    position: relative;
+    display: grid;
+    grid-template-columns: 1fr 56px; /* левая инфо + правая play */
+    gap: 8px;
+    width: 100%;
+  }
+  
+  /* Левая часть — две строки текста */
+  .splitLeft {
+    background: rgb(0, 120, 255); /* тот же голубой */
+    justify-content: flex-start;
+    padding: 10px 14px;
+    width: 100%;
+    text-align: left;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  .splitLeftTitle {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.1;
+    width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  .splitLeftSubtitle {
+    font-size: 12px;
+    opacity: .95;
+  }
+  
+  /* Правая часть — play */
+  .splitRight {
+    background: rgb(0, 89, 255);
+    width: 56px;
+    min-width: 56px;
+    padding: 10px 0;
+  }
+  .splitRight:hover { filter: brightness(.92); }
+  
+  .playIcon {
+    font-size: 22px;
+    line-height: 1;
+  }
+  
+
+  .cockpitButtons {
+    margin-top: 10px;
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    align-items: center;
+
+    width: 80%;           /* ограничиваем ширину */
+    justify-content: flex-start; /* выравнивание влево */
+  }
+  
+  /* чтобы «большие» кнопки занимали всю ширину колонки */
+  .actionButton,
+  .dropdownWrap,
+  .splitChecklist {
+    width: 100%;
+  }
+  
+
+  :root {
+    /* единая высота больших кнопок (подбери под свой дизайн) */
+    --action-btn-h: 50px;
+  }
+  
+  /* базовая кнопка действий */
+  .actionButton {
+    height: var(--action-btn-h);        /* фиксируем высоту */
+    min-height: var(--action-btn-h);
+    padding: 0 16px;                    /* убираем вертикальные паддинги, чтобы высота была фиксированной */
+    display: inline-flex;
+    align-items: center;                /* вертикальный центр для однострочных */
+    justify-content: center;
+    border: none;
+    border-radius: 8px;
+    font-size: 20px;
+    font-weight: 600;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0,0,0,.25);
+    transition: transform .04s ease, filter .12s ease;
+  }
+  
+  /* синяя кнопка Checklists в однострочном режиме — просто центрируем текст */
+  .checklistsButton {
+    background-color: rgb(0,120,255);
+    width: 100%;
+  }
+  
+  /* сплит-кнопка: обе части тоже фиксированной высоты */
+  .splitChecklist {
+    display: grid;
+    grid-template-columns: 1fr 56px;
+    gap: 8px;
+    width: 100%;
+    align-items: stretch;               /* растягиваем обе колонки на одинаковую высоту */
+  }
+  
+  .splitLeft {
+    height: var(--action-btn-h);
+    min-height: var(--action-btn-h);
+    background: rgb(0,120,255);
+    display: flex;                      /* две строки по центру вертикально */
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    padding: 0 14px;                    /* горизонтальные паддинги */
+    text-align: left;
+  }
+
+  .splitLeft:hover { 
+    filter: brightness(.92);
+  }
+  
+  .splitLeftTitle {
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.2;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  .splitLeftSubtitle {
+    margin-top: 2px;
+    font-size: 12px;
+    line-height: 1.2;
+    opacity: .95;
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+  
+  .splitRight {
+    height: var(--action-btn-h);
+    min-height: var(--action-btn-h);
+    background: rgb(0,89,255);
+    width: 56px;
+    min-width: 56px;
+    display: flex;                      /* центрируем иконку Play */
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+  
+  .playIcon { font-size: 22px; line-height: 1; }
+    

@@ -72,6 +72,16 @@ const Cockpits: React.FC = () => {
     });
     const navigate = useNavigate();
 
+    const [openChecklistMenu, setOpenChecklistMenu] = useState<Record<number, boolean>>({});
+
+    const toggleChecklistMenu = (cockpitId: number) => {
+        setOpenChecklistMenu(prev => ({ ...prev, [cockpitId]: !prev[cockpitId] }));
+    };
+
+    const closeChecklistMenu = (cockpitId: number) => {
+        setOpenChecklistMenu(prev => ({ ...prev, [cockpitId]: false }));
+    };
+
     // --- ДОБАВЬ ЭТО ВВЕРХ КОМПОНЕНТА (после других useState) ---
     const [selectedChecklists, setSelectedChecklists] = useState<Record<number, number | "">>({});
 
@@ -269,74 +279,122 @@ const Cockpits: React.FC = () => {
                                             <strong>Created At:</strong>{" "}
                                             {new Date(cockpit.createdAt).toLocaleString()}
                                         </p>
-                                        <div className={styles.cockpitButtons} style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
-                                            <button className={styles.wikiButton} onClick={() => navigate(`/cockpits/${cockpit.id}/wiki`)}>
+                                        <div className={styles.cockpitButtons} >
+                                            {/* <button className={styles.wikiButton} onClick={() => navigate(`/cockpits/${cockpit.id}/wiki`)}>
+                                                View Wiki
+                                            </button> */}
+
+                                            <button  className={`${styles.actionButton} ${styles.wikiButton}`} style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }} onClick={() => navigate(`/cockpits/${cockpit.id}/wiki`)}>
                                                 View Wiki
                                             </button>
 
-                                            {/* Выпадающий список чеклистов (если есть) */}
-                                            {cockpit.checklists && cockpit.checklists.length > 0 && (
-                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                                                    <label style={{ fontWeight: 600 }}>Checklist:</label>
-                                                    <select
-                                                        value={selectedChecklists[cockpit.id] ?? ""}
-                                                        onChange={(e) => handleChecklistSelect(cockpit.id, e.target.value ? Number(e.target.value) : "")}
-                                                        className={styles.checklistDropdown}
-                                                        style={{ padding: '6px 8px', borderRadius: 6 }}
-                                                    >
-                                                        <option value="">— выбрать —</option>
-                                                        {cockpit.checklists.map((cl) => (
-                                                            <option key={cl.id} value={cl.id}>
-                                                                {cl.name}
-                                                            </option>
-                                                        ))}
-                                                    </select>
 
-                                                    {/* Правый блок — запуск + прогресс выбранного чеклиста */}
-                                                    {(() => {
-                                                        const selectedId = selectedChecklists[cockpit.id];
+                                            {cockpit.checklists && cockpit.checklists.length > 0 && (
+                                                <div className={styles.checklistsUiWrap}>
+                                                    {/* 1) Когда чеклист ещё не выбран — показываем одну синюю кнопку */}
+                                                    {(!selectedChecklists[cockpit.id] || selectedChecklists[cockpit.id] === "") && (
+                                                        <div className={styles.dropdownWrap}>
+                                                            <button
+                                                                className={`${styles.actionButton} ${styles.checklistsButton}`}
+                                                                onClick={() => toggleChecklistMenu(cockpit.id)}
+                                                            >
+                                                                Checklists
+                                                            </button>
+
+                                                            {openChecklistMenu[cockpit.id] && (
+                                                                <div className={styles.dropdownMenu}>
+                                                                    {cockpit.checklists.map((cl) => {
+                                                                        const latest = getLatestProgress(cl);
+                                                                        return (
+                                                                            <button
+                                                                                key={cl.id}
+                                                                                className={styles.dropdownItem}
+                                                                                onClick={() => {
+                                                                                    handleChecklistSelect(cockpit.id, cl.id);
+                                                                                    closeChecklistMenu(cockpit.id);
+                                                                                }}
+                                                                                title={cl.name}
+                                                                            >
+                                                                                <span className={styles.dropdownItemTitle}>{cl.name}</span>
+                                                                                <span className={styles.dropdownItemMeta}>
+                                                                                    {latest ? `${latest.percent ?? 0}% (attempt ${latest.attempt ?? 1})` : "no attempts"}
+                                                                                </span>
+                                                                            </button>
+                                                                        );
+                                                                    })}
+                                                                </div>
+                                                            )}
+                                                        </div>
+                                                    )}
+
+                                                    {/* 2) Когда чеклист выбран — показываем сплит-кнопку */}
+                                                    {(selectedChecklists[cockpit.id] && selectedChecklists[cockpit.id] !== "") && (() => {
+                                                        const selectedId = selectedChecklists[cockpit.id] as number;
                                                         const selected = cockpit.checklists?.find(cl => cl.id === selectedId);
                                                         const latest = getLatestProgress(selected);
 
                                                         if (!selected) return null;
 
                                                         return (
-                                                            <div
-                                                                className={styles.checklistActions}
-                                                                style={{
-                                                                    display: 'flex',
-                                                                    alignItems: 'center',
-                                                                    gap: 10,
-                                                                    padding: '6px 10px',
-                                                                    border: '1px solid rgba(0,0,0,.1)',
-                                                                    borderRadius: 8,
-                                                                    background: 'rgba(255,255,255,.6)',
-                                                                    backdropFilter: 'blur(2px)'
-                                                                }}
-                                                            >
+                                                            <div className={styles.splitChecklist}>
                                                                 <button
-                                                                    className={styles.checklistButton}
-                                                                    onClick={() => startSelectedChecklist(cockpit.id, selected.id)}
-                                                                    title="Запустить выбранный чеклист"
+                                                                    className={`${styles.actionButton} ${styles.splitLeft}`}
+                                                                    onClick={() => toggleChecklistMenu(cockpit.id)}
+                                                                    title="Change checklist"
                                                                 >
-                                                                    Запустить
+                                                                    <span className={styles.splitLeftTitle}>{selected.name}</span>
+                                                                    <span className={styles.splitLeftSubtitle}>
+                                                                        {latest ? `${latest.percent ?? 0}% last test` : "no previous test"}
+                                                                    </span>
                                                                 </button>
 
-                                                                <div className={styles.checklistProgress} title="Прогресс последней попытки">
-                                                                    <strong>Прогресс:</strong>{" "}
-                                                                    {latest ? `${latest.percent ?? 0}%` : "—"}
-                                                                    {"  "}
-                                                                    <strong style={{ marginLeft: 8 }}>Попытка:</strong>{" "}
-                                                                    {latest ? (latest.attempt ?? 1) : "—"}
-                                                                </div>
+                                                                <button
+                                                                    className={`${styles.actionButton} ${styles.splitRight}`}
+                                                                    onClick={() => startSelectedChecklist(cockpit.id, selected.id)}
+                                                                    title="Start checklist"
+                                                                >
+                                                                    <span className={styles.playIcon}>▶</span>
+                                                                </button>
+
+                                                                {/* Выпадающее меню для смены выбранного чеклиста */}
+                                                                {openChecklistMenu[cockpit.id] && (
+                                                                    <div className={`${styles.dropdownMenu} ${styles.dropdownMenuAttached}`}>
+                                                                        {cockpit.checklists.map((cl) => {
+                                                                            const latestCl = getLatestProgress(cl);
+                                                                            const active = cl.id === selectedId;
+                                                                            return (
+                                                                                <button
+                                                                                    key={cl.id}
+                                                                                    className={`${styles.dropdownItem} ${active ? styles.dropdownItemActive : ""}`}
+                                                                                    onClick={() => {
+                                                                                        handleChecklistSelect(cockpit.id, cl.id);
+                                                                                        closeChecklistMenu(cockpit.id);
+                                                                                    }}
+                                                                                    title={cl.name}
+                                                                                >
+                                                                                    <span className={styles.dropdownItemTitle}>{cl.name}</span>
+                                                                                    <span className={styles.dropdownItemMeta}>
+                                                                                        {latestCl ? `${latestCl.percent ?? 0}% (attempt ${latestCl.attempt ?? 1})` : "no attempts"}
+                                                                                    </span>
+                                                                                </button>
+                                                                            );
+                                                                        })}
+                                                                    </div>
+                                                                )}
                                                             </div>
                                                         );
                                                     })()}
                                                 </div>
                                             )}
 
-                                            {currentUser && cockpit.creatorId === currentUser.id && (
+
+                                            {/* {currentUser && cockpit.creatorId === currentUser.id && (
                                                 <button className={styles.editButton} onClick={() => navigate(`/cockpits/${cockpit.id}/edit`)}>
+                                                    <i className="fa-solid fa-edit"></i> Edit
+                                                </button>
+                                            )} */}
+                                            {currentUser && cockpit.creatorId === currentUser.id && (
+                                                <button className={`${styles.actionButton} ${styles.editButton}`} onClick={() => navigate(`/cockpits/${cockpit.id}/edit`)}>
                                                     <i className="fa-solid fa-edit"></i> Edit
                                                 </button>
                                             )}
@@ -349,7 +407,7 @@ const Cockpits: React.FC = () => {
                     </div>
                 </div>
             </div>
-        </div>
+        </div >
     );
 
 };
