@@ -6,6 +6,7 @@ import { api } from "../api/axios";
 
 interface Checklist {
     id: number;
+    name: string;
     progresses?: {
         percent: number;
         attempt: number;
@@ -34,12 +35,13 @@ interface Cockpit {
     model: string | null;
     type: string | null;
     creatorId: number;
-    checklist?: Checklist | null;
+    checklists?: Checklist[] | null;
     creator?: Creator | null;
     media: Media[];
     _count: {
         favoritedBy: number; // Количество пользователей, добавивших в избранное
     };
+
 }
 
 interface User {
@@ -69,6 +71,28 @@ const Cockpits: React.FC = () => {
         orderBy: "",
     });
     const navigate = useNavigate();
+
+    // --- ДОБАВЬ ЭТО ВВЕРХ КОМПОНЕНТА (после других useState) ---
+    const [selectedChecklists, setSelectedChecklists] = useState<Record<number, number | "">>({});
+
+    /** Берём последнюю попытку как актуальную */
+    const getLatestProgress = (cl?: Checklist | null) => {
+        if (!cl?.progresses || cl.progresses.length === 0) return null;
+        return cl.progresses[cl.progresses.length - 1];
+    };
+
+    const handleChecklistSelect = (cockpitId: number, checklistId: number | "") => {
+        setSelectedChecklists(prev => ({ ...prev, [cockpitId]: checklistId }));
+    };
+
+    const startSelectedChecklist = (cockpitId: number, checklistId: number | "") => {
+        if (!checklistId) return;
+        // Маршрут подставь под свой реальный: вариант 1
+        navigate(`/cockpits/${cockpitId}/checklist/${checklistId}`);
+        // если у тебя страница одна и принимает query:
+        // navigate(`/cockpits/${cockpitId}/checklist?checklistId=${checklistId}`);
+    };
+
 
     // Функция для получения данных текущего пользователя
     const fetchCurrentUser = async () => {
@@ -245,26 +269,79 @@ const Cockpits: React.FC = () => {
                                             <strong>Created At:</strong>{" "}
                                             {new Date(cockpit.createdAt).toLocaleString()}
                                         </p>
-                                        <div className={styles.cockpitButtons}>
+                                        <div className={styles.cockpitButtons} style={{ display: 'flex', gap: 12, alignItems: 'center', flexWrap: 'wrap' }}>
                                             <button className={styles.wikiButton} onClick={() => navigate(`/cockpits/${cockpit.id}/wiki`)}>
                                                 View Wiki
                                             </button>
-                                            {cockpit.checklist && (
-                                                <button className={styles.checklistButton} onClick={() => navigate(`/cockpits/${cockpit.id}/checklist`)}>
-                                                    Checklist
-                                                </button>
-                                            )}
-                                            {cockpit.checklist && cockpit.checklist.progresses && cockpit.checklist.progresses.length > 0 ? (
-                                                <div className={styles.checklistProgress}>
-                                                    {cockpit.checklist.progresses[0]?.percent ?? "N/A"}% - Attempt {cockpit.checklist.progresses[0]?.attempt ?? "N/A"}
+
+                                            {/* Выпадающий список чеклистов (если есть) */}
+                                            {cockpit.checklists && cockpit.checklists.length > 0 && (
+                                                <div style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
+                                                    <label style={{ fontWeight: 600 }}>Checklist:</label>
+                                                    <select
+                                                        value={selectedChecklists[cockpit.id] ?? ""}
+                                                        onChange={(e) => handleChecklistSelect(cockpit.id, e.target.value ? Number(e.target.value) : "")}
+                                                        className={styles.checklistDropdown}
+                                                        style={{ padding: '6px 8px', borderRadius: 6 }}
+                                                    >
+                                                        <option value="">— выбрать —</option>
+                                                        {cockpit.checklists.map((cl) => (
+                                                            <option key={cl.id} value={cl.id}>
+                                                                {cl.name}
+                                                            </option>
+                                                        ))}
+                                                    </select>
+
+                                                    {/* Правый блок — запуск + прогресс выбранного чеклиста */}
+                                                    {(() => {
+                                                        const selectedId = selectedChecklists[cockpit.id];
+                                                        const selected = cockpit.checklists?.find(cl => cl.id === selectedId);
+                                                        const latest = getLatestProgress(selected);
+
+                                                        if (!selected) return null;
+
+                                                        return (
+                                                            <div
+                                                                className={styles.checklistActions}
+                                                                style={{
+                                                                    display: 'flex',
+                                                                    alignItems: 'center',
+                                                                    gap: 10,
+                                                                    padding: '6px 10px',
+                                                                    border: '1px solid rgba(0,0,0,.1)',
+                                                                    borderRadius: 8,
+                                                                    background: 'rgba(255,255,255,.6)',
+                                                                    backdropFilter: 'blur(2px)'
+                                                                }}
+                                                            >
+                                                                <button
+                                                                    className={styles.checklistButton}
+                                                                    onClick={() => startSelectedChecklist(cockpit.id, selected.id)}
+                                                                    title="Запустить выбранный чеклист"
+                                                                >
+                                                                    Запустить
+                                                                </button>
+
+                                                                <div className={styles.checklistProgress} title="Прогресс последней попытки">
+                                                                    <strong>Прогресс:</strong>{" "}
+                                                                    {latest ? `${latest.percent ?? 0}%` : "—"}
+                                                                    {"  "}
+                                                                    <strong style={{ marginLeft: 8 }}>Попытка:</strong>{" "}
+                                                                    {latest ? (latest.attempt ?? 1) : "—"}
+                                                                </div>
+                                                            </div>
+                                                        );
+                                                    })()}
                                                 </div>
-                                            ) : ""}
+                                            )}
+
                                             {currentUser && cockpit.creatorId === currentUser.id && (
                                                 <button className={styles.editButton} onClick={() => navigate(`/cockpits/${cockpit.id}/edit`)}>
                                                     <i className="fa-solid fa-edit"></i> Edit
                                                 </button>
                                             )}
                                         </div>
+
                                     </div>
                                 </div>
                             ))}

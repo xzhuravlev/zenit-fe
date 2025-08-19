@@ -8,6 +8,7 @@ import Cockpits from './pages/Cockpits';
 import CreateCockpit from './pages/CreateCockpit';
 import WikiCockpit from './pages/WikiCockpit';
 import EditCockpit from './pages/EditCockpit';
+import Checklist from './pages/Checklist';
 
 const App: React.FC = () => {
     return (
@@ -20,6 +21,7 @@ const App: React.FC = () => {
 					<Route path="/create-cockpit" element={<CreateCockpit />} />
 					<Route path="/cockpits/:id/wiki" element={<WikiCockpit />} />
 					<Route path="/cockpits/:id/edit" element={<EditCockpit />} />
+                    <Route path="/cockpits/:cockpitId/checklist/:checklistId" element={<Checklist />} />
 
                 </Routes>
             </Layout>

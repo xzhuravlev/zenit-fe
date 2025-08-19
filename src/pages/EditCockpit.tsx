@@ -2,7 +2,6 @@ import React, { useEffect, useRef, useState } from "react";
 import styles from "./EditCockpit.module.css";
 import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/axios";
-import { timeStamp } from "console";
 
 
 interface Media {
@@ -63,8 +62,6 @@ const EditCockpit: React.FC = () => {
     const [panoramaPreviewUrl, setPanoramaPreviewUrl] = useState<string | null>(null);
     const [panoramaPreviewWidth, setPanoramaPreviewWidth] = useState<number>(0);
     const [panoramaPreviewHeight, setPanoramaPreviewHeight] = useState<number>(0);
-    const [cockpitDescription, setCockpitDescription] = useState<string | null>(null);
-    const [instrumentDescriptions, setInstrumentDescriptions] = useState<{ [key: number]: string }>({});
     const viewerRef = useRef<any>(null);
 
     const [panoramaSelectedFile, setPanoramaSelectedFile] = useState<File | null>(null);
