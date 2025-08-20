@@ -538,3 +538,9 @@ body {
   background: rgb(255, 166, 0);
   box-shadow: 0 0 30px rgb(255, 166, 0);
 }
+
+.favoriteCount {
+  display: inline-block;
+  min-width: 3ch; /* резерв под 3 символа, независимо от числа */
+  text-align: right;
+}

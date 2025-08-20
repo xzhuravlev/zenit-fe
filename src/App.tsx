@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import Layout from './components/Layout';
 import './App.css';
@@ -17,6 +17,7 @@ const App: React.FC = () => {
             <AuthProvider>
                 <Layout>
                     <Routes>
+                        <Route path="/" element={<Navigate to="/cockpits" replace />} />
                         <Route path="/signin" element={<SignIn />} />
                         <Route path="/signup" element={<SignUp />} />
                         <Route path="/cockpits" element={<Cockpits />} />

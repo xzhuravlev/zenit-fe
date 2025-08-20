@@ -110,6 +110,17 @@ const Cockpits: React.FC = () => {
         }
     };
 
+    function formatFavorites(count: number): string {
+        if (count < 1000) {
+            return count.toString().padStart(3, " "); // резервируем 3 позиции
+        } else if (count < 1_000_000) {
+            return (count / 1000).toFixed(2) + "K";
+        } else if (count < 1_000_000_000) {
+            return (count / 1_000_000).toFixed(2) + "M";
+        } else {
+            return (count / 1_000_000_000).toFixed(2) + "B";
+        }
+    }
 
     const [openChecklistMenu, setOpenChecklistMenu] = useState<Record<number, boolean>>({});
 
@@ -291,17 +302,25 @@ const Cockpits: React.FC = () => {
                                             </span>
                                             <span>
                                                 {cockpit.creator?.verified && (
-                                                    <span style={{
-                                                        color: 'white',
-                                                        background: 'deepskyblue',
-                                                        padding: '2px 6px',
-                                                        borderRadius: '50%',
-                                                        boxShadow: "0 0 20px rgba(255, 255, 255, 1)",
-                                                        marginRight: "10px",
-                                                    }}>
+                                                    <span
+                                                        style={{
+                                                            display: "inline-flex",
+                                                            justifyContent: "center",
+                                                            alignItems: "center",
+                                                            width: "35px",
+                                                            height: "35px",
+                                                            borderRadius: "50%", // делает ровный круг
+                                                            background: "deepskyblue",
+                                                            color: "white",
+                                                            fontWeight: "bold",
+                                                            boxShadow: "0 0 6px rgba(255, 255, 255, 0.8)",
+                                                            marginRight: "10px",
+                                                        }}
+                                                    >
                                                         ✓
                                                     </span>
                                                 )}
+
                                                 <button
                                                     className={`${styles.favoriteButton} ${likedByMe[cockpit.id] ? styles.favoriteActive : ""}`}
                                                     onClick={() => toggleFavorite(cockpit.id)}
@@ -310,8 +329,11 @@ const Cockpits: React.FC = () => {
                                                     title={likedByMe[cockpit.id] ? "Remove from favorites" : "Add to favorites"}
                                                 >
                                                     <span className={styles.starIcon}>★</span>
-                                                    {cockpit?._count?.favoritedBy ?? 0}
+                                                    <span className={styles.favoriteCount}>
+                                                        {formatFavorites(cockpit?._count?.favoritedBy ?? 0)}
+                                                    </span>
                                                 </button>
+
 
 
                                             </span>

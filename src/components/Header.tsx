@@ -37,8 +37,7 @@ const Header: React.FC = () => {
 
             <nav className={styles.nav}>
                 <ul className={styles.navList}>
-                    <li><Link to="/cockpits">Cockpits</Link></li>
-                    <li><Link to="/create-cockpit">Create Cockpit</Link></li>
+
 
                     {!user ? (
                         <>
@@ -47,6 +46,8 @@ const Header: React.FC = () => {
                         </>
                     ) : (
                         <>
+                            <li><Link to="/cockpits">Cockpits</Link></li>
+                            <li><Link to="/create-cockpit">Create Cockpit</Link></li>
                             <li>
                                 <span className={styles.userBadge}>
                                     {user.username} ({user.role})
