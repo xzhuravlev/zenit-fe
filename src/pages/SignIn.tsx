@@ -13,6 +13,7 @@ const SignIn: React.FC = () => {
         e.preventDefault();
         try {
             await api.post('/auth/login', { email, password });
+            window.dispatchEvent(new Event('auth:changed'));
             navigate('/cockpits');
         } catch (err: any) {
             setError(err.message || "Error authorization");

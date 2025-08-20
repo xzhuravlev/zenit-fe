@@ -46,6 +46,7 @@ api.interceptors.response.use(
             } catch (refreshError) {
                 // Если refresh неудачен — удалить токены и перекинуть пользователя на вход
                 localStorage.removeItem("access_token");
+                window.dispatchEvent(new Event('auth:changed'));
                 window.location.href = "/signin"; // или navigate("/signin") если в React
                 return Promise.reject(refreshError);
             }

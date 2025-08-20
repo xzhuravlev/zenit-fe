@@ -14,6 +14,7 @@ const SignIn: React.FC = () => {
         e.preventDefault();
         try {
             await api.post('/auth/registration', { email, username, password });
+            window.dispatchEvent(new Event('auth:changed'));
             navigate('/cockpits');
         } catch (err: any) {
             setError(err.message || "Error authorization");
