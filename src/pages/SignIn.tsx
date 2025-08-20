@@ -16,38 +16,49 @@ const SignIn: React.FC = () => {
             window.dispatchEvent(new Event('auth:changed'));
             navigate('/cockpits');
         } catch (err: any) {
-            setError(err.message || "Error authorization");
+            setError(err.response?.data?.message || "Authorization error");
         }
-    }
-
+    };
 
     return (
         <div className={styles.pageContainer}>
             <div className={styles.contentBody}>
-                <h2>Has account? Sign In!</h2>
-                <form onSubmit={handleSubmit}>
-                    <div>
-                        <label>Email:</label>
+                <h2 className={styles.title}>Sign In 🔐</h2>
+                <form onSubmit={handleSubmit} className={styles.form}>
+                    {error && <div className={styles.error}>{error}</div>}
+
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>Email</label>
                         <input
+                            className={styles.input}
                             type="email"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required
+                            placeholder="Enter your email"
                         />
                     </div>
-                    <div>
-                        <label>Пароль:</label>
+
+                    <div className={styles.formGroup}>
+                        <label className={styles.label}>Password</label>
                         <input
+                            className={styles.input}
                             type="password"
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             required
+                            placeholder="Enter your password"
                         />
                     </div>
-                    <button type="submit">Войти</button>
+
+                    <button type="submit" className={styles.button}>
+                        Sign In
+                    </button>
                 </form>
-                <div>
-                    <Link to="/signup">Don't have an account? Sign up!</Link>
+
+                <div className={styles.signUpLink}>
+                    <span>Don’t have an account? </span>
+                    <Link to="/signup">Sign up!</Link>
                 </div>
             </div>
         </div>
