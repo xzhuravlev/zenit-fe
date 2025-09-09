@@ -68,9 +68,6 @@ const EditCockpit: React.FC = () => {
     const [uploadingFlag, setUploadingFlag] = useState<boolean>(false);
     const [addingInstrumentFlag, setAddingInstrumentFlag] = useState<boolean>(false);
 
-
-
-
     const [loadingFlag, setLoadingFlag] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
