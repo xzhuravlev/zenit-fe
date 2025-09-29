@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styles from "./SignIn.module.css";
 import { api } from "../api/axios";
+import { GoogleLogin } from "@react-oauth/google";
 
 const SignIn: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -17,6 +18,16 @@ const SignIn: React.FC = () => {
             navigate('/cockpits');
         } catch (err: any) {
             setError(err.response?.data?.message || "Authorization error");
+        }
+    };
+
+    const handleGoogleSuccess = async (cred: any) => {
+        try {
+            await api.post('/auth/google', { idToken: cred.credential });
+            window.dispatchEvent(new Event('auth:changed'));
+            navigate('/cockpits');
+        } catch (err: any) {
+            setError(err.response?.data?.message || "Google authorization error");
         }
     };
 
@@ -60,6 +71,8 @@ const SignIn: React.FC = () => {
                     <span>Don’t have an account? </span>
                     <Link to="/signup">Sign up!</Link>
                 </div>
+
+                <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => setError("Google login error")}/>
             </div>
         </div>
     );
