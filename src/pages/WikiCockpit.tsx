@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useRef } from "react";
 import styles from "./WikiCockpit.module.css";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { api } from "../api/axios";
 
 
@@ -49,6 +49,7 @@ const WikiCockpit: React.FC = () => {
 
     const [loadingFlag, setLoadingFlag] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+    // const navigate = useNavigate();
 
     useEffect(() => {
         const fetchCockpit = async () => {
@@ -116,6 +117,22 @@ const WikiCockpit: React.FC = () => {
             });
         }
     }, [panoramaPreviewUrl]);
+
+    // useEffect(() => {
+    //     (async () => {
+    //         try {
+    //             await api.get(`/cockpits/${id}`); // или твой URL wiki
+    //         } catch (e: any) {
+    //             const status = e?.response?.status;
+    //             const message = e?.response?.data?.message;
+    //             if (status === 403 && /Purchase required/i.test(message || '')) {
+    //                 navigate(`/cockpits/${id}/pay`);
+    //                 return;
+    //             }
+    //             setError(message || 'Error loading cockpit');
+    //         }
+    //     })();
+    // }, [id, navigate]);
 
     // Добавление инструментов в панораму
     // Добавление инструментов в панораму после полной загрузки
