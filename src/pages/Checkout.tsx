@@ -22,7 +22,8 @@ function CheckoutForm({ clientSecret }: { clientSecret: string }) {
             elements,
             confirmParams: {
                 // на успех вернём юзера обратно на вики конкретного кокпита
-                return_url: window.location.origin + window.location.pathname.replace('/pay', '/wiki'),
+                // return_url: window.location.origin + window.location.pathname.replace('/pay', '/wiki'),
+                return_url: window.location.origin + '/cockpits',
             },
             redirect: 'if_required',
         });
@@ -32,7 +33,8 @@ function CheckoutForm({ clientSecret }: { clientSecret: string }) {
             setError(error.message || 'Payment error');
         } else {
             // если редиректа не было — вручную ведём на wiki
-            navigate(window.location.pathname.replace('/pay', '/wiki'));
+            // navigate(window.location.pathname.replace('/pay', '/wiki'));
+            navigate('/cockpits');
         }
     };
 
