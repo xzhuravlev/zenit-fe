@@ -49,6 +49,7 @@ interface Cockpit {
 interface User {
     username: string;
     id: number;
+    role: string;
 }
 
 interface Filters {
@@ -483,7 +484,7 @@ const Cockpits: React.FC = () => {
                                                     <i className="fa-solid fa-edit"></i> Edit
                                                 </button>
                                             )} */}
-                                            {currentUser && cockpit.creatorId === currentUser.id && (
+                                            {currentUser && (cockpit.creatorId === currentUser.id || (currentUser.role !== 'USER' && !cockpit.isForSale)) && (
                                                 <button className={`${styles.actionButton} ${styles.editButton}`} onClick={() => navigate(`/cockpits/${cockpit.id}/edit`)}>
                                                     <i className="fa-solid fa-edit"></i> Edit
                                                 </button>

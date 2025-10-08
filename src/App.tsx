@@ -10,7 +10,9 @@ import CreateCockpit from './pages/CreateCockpit';
 import WikiCockpit from './pages/WikiCockpit';
 import EditCockpit from './pages/EditCockpit';
 import Checklist from './pages/Checklist';
-import { CheckoutWrapper }from './pages/Checkout';
+import { CheckoutWrapper } from './pages/Checkout';
+import AdminDashboard from './pages/AdminDashboard';
+import AdminUsers from './pages/AdminUsers';
 
 const App: React.FC = () => {
     return (
@@ -27,6 +29,8 @@ const App: React.FC = () => {
                         <Route path="/cockpits/:id/edit" element={<EditCockpit />} />
                         <Route path="/cockpits/:cockpitId/checklist/:checklistId" element={<Checklist />} />
                         <Route path="/cockpits/:id/pay" element={<CheckoutWrapper />} />
+                        <Route path="/admin" element={<AdminDashboard />} />
+                        <Route path="/admin/users" element={<AdminUsers />} />
                     </Routes>
                 </Layout>
             </AuthProvider>

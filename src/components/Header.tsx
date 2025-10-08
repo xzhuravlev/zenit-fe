@@ -1,8 +1,10 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import styles from './Header.module.css';
-import { api } from '../api/axios';
-import { useAuth } from '../context/AuthContext';
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import styles from "./Header.module.css";
+import { api } from "../api/axios";
+import { useAuth } from "../context/AuthContext";
+
+const DEFAULT_AVATAR = "/media/avatar.jpg"; // из public
 
 const Header: React.FC = () => {
     const navigate = useNavigate();
@@ -12,22 +14,24 @@ const Header: React.FC = () => {
     const handleLogout = async () => {
         if (loading) return;
         setLoading(true);
-        const accessToken = localStorage.getItem('access_token');
+        const accessToken = localStorage.getItem("access_token");
 
         try {
-            await api.post('/auth/logout', null, {
+            await api.post("/auth/logout", null, {
                 withCredentials: true,
                 headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : {},
             });
-        } catch { } finally {
-            localStorage.removeItem('access_token');
-            window.dispatchEvent(new Event('auth:changed')); // сообщаем провайдеру
+        } catch {
+            // игнорируем ошибки
+        } finally {
+            localStorage.removeItem("access_token");
+            window.dispatchEvent(new Event("auth:changed"));
             setLoading(false);
-            navigate('/signin', { replace: true });
+            navigate("/signin", { replace: true });
         }
     };
 
-    const isAdminLike = user?.role === 'ADMIN';
+    const isAdminLike = user?.role === "ADMIN";
 
     return (
         <header className={styles.header}>
@@ -37,8 +41,6 @@ const Header: React.FC = () => {
 
             <nav className={styles.nav}>
                 <ul className={styles.navList}>
-
-
                     {!user ? (
                         <>
                             <li><Link to="/signin">Sign In</Link></li>
@@ -48,17 +50,29 @@ const Header: React.FC = () => {
                         <>
                             <li><Link to="/cockpits">Cockpits</Link></li>
                             <li><Link to="/create-cockpit">Create Cockpit</Link></li>
-                            <li>
+
+                            <li className={styles.userInfo}>
+                                <img
+                                    src={user.avatar || DEFAULT_AVATAR}
+                                    alt="User avatar"
+                                    className={styles.avatar}
+                                />
                                 <span className={styles.userBadge}>
                                     {user.username} ({user.role})
                                 </span>
                             </li>
+
                             {isAdminLike && (
                                 <li><Link to="/admin">Admin Panel</Link></li>
                             )}
+
                             <li>
-                                <button onClick={handleLogout} className={styles.logoutBtn} disabled={loading}>
-                                    {loading ? 'Logging out…' : 'Logout'}
+                                <button
+                                    onClick={handleLogout}
+                                    className={styles.logoutBtn}
+                                    disabled={loading}
+                                >
+                                    {loading ? "Logging out…" : "Logout"}
                                 </button>
                             </li>
                         </>

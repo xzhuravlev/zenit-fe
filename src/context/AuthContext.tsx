@@ -9,6 +9,7 @@ export interface Me {
     email: string;
     role: Role;
     verified: boolean;
+    avatar: string;
 }
 
 type AuthState = {

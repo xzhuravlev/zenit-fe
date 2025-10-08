@@ -34,7 +34,9 @@ function CheckoutForm({ clientSecret }: { clientSecret: string }) {
         } else {
             // если редиректа не было — вручную ведём на wiki
             // navigate(window.location.pathname.replace('/pay', '/wiki'));
-            navigate('/cockpits');
+            setTimeout(() => {
+                navigate('/cockpits');
+            }, 2000);
         }
     };
 
