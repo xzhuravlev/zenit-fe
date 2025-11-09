@@ -71,8 +71,9 @@ const SignIn: React.FC = () => {
                     <span>Don’t have an account? </span>
                     <Link to="/signup">Sign up!</Link>
                 </div>
-
-                <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => setError("Google login error")}/>
+                <div className={styles.googleButton}>
+                    <GoogleLogin onSuccess={handleGoogleSuccess} onError={() => setError("Google login error")}/>
+                </div>
             </div>
         </div>
     );

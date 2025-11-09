@@ -75,3 +75,28 @@
   object-fit: cover;
   border: 1px solid #ddd;
 }
+
+.navList {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+/* новый контейнер справа */
+.rightBlock {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+
+  margin-left: auto; /* ← магия: всё после этого элемента прижимается вправо */
+}
+
+/* можно дополнительно убрать фон у юзер-бейджа, если не хочешь, чтобы он выглядел как кнопка */
+.userInfo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  padding: 0;
+}

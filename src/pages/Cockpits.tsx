@@ -261,14 +261,6 @@ const Cockpits: React.FC = () => {
                                 />
                             </div>
                             <div className={styles.filterGroup}>
-                                <label>Has Checklist:</label>
-                                <input
-                                    type="checkbox"
-                                    checked={filters.hasChecklist}
-                                    onChange={(e) => setFilters({ ...filters, hasChecklist: e.target.checked })}
-                                />
-                            </div>
-                            <div className={styles.filterGroup}>
                                 <label>Order By:</label>
                                 <select
                                     value={filters.orderBy}
