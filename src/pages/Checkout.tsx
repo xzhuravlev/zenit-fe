@@ -1,11 +1,14 @@
 // src/pages/Checkout.tsx
 import { useEffect, useState } from 'react';
-import { loadStripe } from '@stripe/stripe-js';
+import { loadStripe, Stripe } from '@stripe/stripe-js';
 import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 import { api } from '../api/axios';
 import { useParams, useNavigate } from 'react-router-dom';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_PK as string);
+const stripePk = process.env.REACT_APP_STRIPE_PK;
+const stripeActive = process.env.REACT_APP_STRIPE_ACTIVE;
+
+const stripePromise: Promise<Stripe | null> | null = (stripePk && stripeActive === "true") ? loadStripe(stripePk as string) : null;
 
 function CheckoutForm({ clientSecret }: { clientSecret: string }) {
     const stripe = useStripe();
@@ -60,6 +63,7 @@ export default function Checkout({ cockpitId }: { cockpitId: number }) {
     // ЗАЩИТА от двойного вызова useEffect в React StrictMode:
     // если уже грузимся или уже есть clientSecret — второй вызов прерываем
     useEffect(() => {
+        if (!stripePromise) return;
         if (loading || clientSecret) return;
         setLoading(true);
         api.post('/purchases/create-intent', { cockpitId })
@@ -70,6 +74,14 @@ export default function Checkout({ cockpitId }: { cockpitId: number }) {
             })
             .finally(() => setLoading(false));
     }, [cockpitId, loading, clientSecret]);
+
+    if (!stripePromise) {
+        return(
+            <div style={{color: 'crimson'}}>
+                Payments are disabled: REACT_APP_STRIPE_PK is missing or REACT_APP_STRIPE_ACTIVE is false;
+            </div>
+        )
+    }
 
     if (error) return <div style={{ color: 'crimson' }}>{error}</div>;
     if (!clientSecret) return <div>Loading checkout…</div>;
