@@ -12,4 +12,4 @@ Run the application:
 $ yarn start
 ```
 
-Frontend app on `http://localhost:3000`
+Frontend app on `localhost:3000`
